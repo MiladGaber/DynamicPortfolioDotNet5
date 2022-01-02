@@ -1,4 +1,6 @@
-﻿@{
+﻿@model HomeVM
+
+@{
     ViewData["Title"] = "Index";
 }
 
@@ -7,10 +9,10 @@
     <div class="container d-flex align-items-center flex-column">
 
       <!-- Masthead Avatar Image -->
-      <img class="masthead-avatar mb-5" src="~/img/avatar.jpg" style="border-radius:50%" alt="">
+      <img class="masthead-avatar mb-5" src="~/img/@Model.Owner.AvatarUrl" style="border-radius:50%" alt="">
 
       <!-- Masthead Heading -->
-      <h1 class="masthead-heading text-uppercase mb-0">Start Bootstrap</h1>
+      <h1 class="masthead-heading text-uppercase mb-0">@Model.Owner.FullName</h1>
 
       <!-- Icon Divider -->
       <div class="divider-custom divider-light">
@@ -22,7 +24,7 @@
       </div>
 
       <!-- Masthead Subheading -->
-      <p class="masthead-subheading font-weight-light mb-0">Graphic Artist - Web Designer - Illustrator</p>
+      <p class="masthead-subheading font-weight-light mb-0">@Model.Owner.JopTitle</p>
 
     </div>
   </header>
@@ -46,18 +48,21 @@
       <!-- Portfolio Grid Items -->
       <div class="row">
 
-        <!-- Portfolio Item 1 -->
-        <div class="col-md-6 col-lg-4">
-          <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1">
-            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-              <div class="portfolio-item-caption-content text-center text-white">
-                <i class="fas fa-plus fa-3x"></i>
+        @foreach (var item in Model.PortfolioItems)
+        {
+           <!-- Portfolio Item  -->
+            <div class="col-md-6 col-lg-4">
+              <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#item-@item.Id">
+                <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                  <div class="portfolio-item-caption-content text-center text-white">
+                    <i class="fas fa-plus fa-3x"></i>
+                  </div>
+                </div>
+                <img class="img-fluid" src="~/img/portfolio/@item.ImgUrl" alt="">
               </div>
             </div>
-            <img class="img-fluid" src="~/img/portfolio/instagram.png" alt="">
-          </div>
-        </div>
-
+        }
+        
 
       </div>
       <!-- /.row -->
@@ -65,8 +70,10 @@
     </div>
   </section>
 
+  @foreach (var itemModel in Model.PortfolioItems)
+    {
   <!-- Portfolio Modal 1 -->
-  <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-labelledby="portfolioModal1Label" aria-hidden="true">
+  <div class="portfolio-modal modal fade" id="item-@itemModel.Id" tabindex="-1" role="dialog" aria-labelledby="portfolioModal1Label" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -77,33 +84,36 @@
         <div class="modal-body text-center">
           <div class="container">
             <div class="row justify-content-center">
-              <div class="col-lg-8">
-                <!-- Portfolio Modal - Title -->
-                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">Log Cabin</h2>
-                <!-- Icon Divider -->
-                <div class="divider-custom">
-                  <div class="divider-custom-line"></div>
-                  <div class="divider-custom-icon">
-                    <i class="fas fa-star"></i>
-                  </div>
-                  <div class="divider-custom-line"></div>
-                </div>
-                <!-- Portfolio Modal - Image -->
-                <img class="img-fluid rounded mb-5" src="~/img/portfolio/instagram.png" alt="">
-                <!-- Portfolio Modal - Text -->
-                <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
-                <button class="btn btn-primary" href="#" data-dismiss="modal">
-                  <i class="fas fa-times fa-fw"></i>
-                  Close Window
-                </button>
-              </div>
+                
+                    <div class="col-lg-8">
+                        <!-- Portfolio Modal - Title -->
+                        <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">@itemModel.ProjectName</h2>
+                        <!-- Icon Divider -->
+                        <div class="divider-custom">
+                            <div class="divider-custom-line"></div>
+                            <div class="divider-custom-icon">
+                            <i class="fas fa-star"></i>
+                            </div>
+                            <div class="divider-custom-line"></div>
+                        </div>
+                        <!-- Portfolio Modal - Image -->
+                        <img class="img-fluid rounded mb-5" src="~/img/portfolio/@itemModel.ImgUrl" alt="">
+                        <!-- Portfolio Modal - Text -->
+                        <p class="mb-5">@itemModel.Description</p>
+                        <button class="btn btn-primary" href="#" data-dismiss="modal">
+                            <i class="fas fa-times fa-fw"></i>
+                            Close Window
+                        </button>
+                    </div>
+                
+              
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
+  }
     <!-- About Section -->
   <section class="page-section bg-primary text-white mb-0" id="about">
     <div class="container">

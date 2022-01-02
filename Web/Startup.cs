@@ -1,4 +1,6 @@
+using Core.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,11 +25,16 @@ namespace Web
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation(); 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("cs"));
             });
+
+            services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+
+            services.AddMvc();
+            services.AddMvcCore().AddDataAnnotations();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
